@@ -28,6 +28,7 @@ class Quote:
     """
     symbol = None
     source = None
+    _currency = None
 
     """ The main application object """
     def __init__(self):
@@ -48,7 +49,7 @@ class Quote:
         # fetch the prices using the given module.
         result = []
         for symbol in symbols:
-            price = self.__download(exchange, symbol, None, self.source)
+            price = self.__download(exchange, symbol, self._currency, self.source)
             if price:
                 result.append(price)
 
@@ -64,7 +65,7 @@ class Quote:
         # the default currency rate provider
         default_provider = "Fixerio"
 
-        result = self.__download(source, destination, default_provider)
+        result = self.__download("CURRENCY", source, destination, default_provider)
 
         return result
 
@@ -75,6 +76,12 @@ class Quote:
         for source in DownloadSources:
             result.append(source.name)
         return result
+
+    def set_currency(self, currency: str):
+        """ Sets the output currency """
+        assert currency
+
+        self._currency = currency.upper()
 
     def set_source(self, source: str):
         """ Set the download source to use to fetch the prices. """
