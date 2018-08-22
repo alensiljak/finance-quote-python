@@ -8,12 +8,13 @@ from finance_quote_python import Quote
 
 def test_new():
     """ just create a new object without new() """
-    obj = Quote()
-    assert obj is not None
+    q = Quote()
+    assert q is not None
 
 def test_fetch():
     """ test for fetch method """
-    assert False
+    q = Quote()
+    actual = q.fetch("vanguard_au", ["BOND"])
 
 def test_sources():
     assert False
