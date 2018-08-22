@@ -1,9 +1,10 @@
 """ The main module """
+from decimal import Decimal
 from typing import List
 import logging
 from enum import Enum, auto
 
-from pricedb import SecuritySymbol
+from pricedb import PriceModel
 
 from .alphavantage import AlphaVantageDownloader
 from .morningstar import MorningstarDownloader
@@ -42,8 +43,19 @@ class Quote:
         result = []
         return result
 
-    def currency(self):
-        pass
+    def currency(self, source: str, destination: str) -> PriceModel:
+        """ Fetches the currency exchange rate of the 1st currency in 2nd.
+        i.e. currency("AUD", "EUR") will return the rate for AUD in Euros. (0.71)
+        """
+        source = source.upper()
+        destination = destination.upper()
+
+        # the default currency rate provider
+        default_provider = "Fixerio"
+
+        result = self.__download(source, destination, default_provider)
+
+        return result
 
     def __download_price(self, exchange: str, symbol: str):
         """ Download single price """
@@ -54,6 +66,8 @@ class Quote:
 
     def __download(self, symbol: str, currency: str = None, agent: str = None):
         """ Download single latest price """
+        from pricedb import SecuritySymbol
+
         assert agent is not None
         assert isinstance(agent, str)
 

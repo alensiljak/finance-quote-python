@@ -14,29 +14,10 @@ except ImportError:
     import json
 from pricedb import SecuritySymbol
 from pricedb.config import Config, ConfigKeys
+from pricedb.model import PriceModel
 
 
-class Quote:
-    """Class to represent a quote (price, ...)"""
-
-    def __init__(self):
-        self.datum: Datum = Datum()
-        #self.namespace: str = None
-        self.symbol: SecuritySymbol = None
-        self.value: Decimal = Decimal(0)
-        self.currency: str = None
-
-    def __repr__(self):
-        # symbol = ("{namespace}:{symbol}".format(namespace=self.namespace, symbol=self.symbol)
-        #           if self.namespace else self.symbol)
-        symbol = repr(self.symbol)
-        symbol = "{symbol:<13}".format(symbol=symbol)
-
-        value = "{value:>6}".format(value=self.value)
-        return f"<Quote ('{symbol}',date:{self.datum},value:{value},currency:{self.currency})>"
-
-
-class FixerioQuote(Quote):
+class FixerioQuote(PriceModel):
     """ Fixer.io-specific quote """
     pass
 
@@ -199,7 +180,7 @@ class FixerioModelMapper:
         rounded_str = "{0:.6f}".format(rate)
         rounded = Decimal(rounded_str)
 
-        model = Quote()
+        model = FixerioQuote()
         model.symbol = SecuritySymbol("CURRENCY", symbol)
         model.value = rounded
         model.datum.from_iso_date_string(date_str)

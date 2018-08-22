@@ -1,1 +1,1 @@
-from finance_quote_python.finance import Quote
+from .finance import Quote
