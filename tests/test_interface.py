@@ -15,6 +15,9 @@ def test_fetch():
     """ test for fetch method """
     q = Quote()
     actual = q.fetch("vanguard_au", ["BOND"])
+    
+    assert actual is not None
+    assert actual
 
 def test_sources():
     assert False
