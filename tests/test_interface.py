@@ -14,13 +14,21 @@ def test_new():
 def test_fetch():
     """ test for fetch method """
     q = Quote()
-    actual = q.fetch("vanguard_au", ["BOND"])
+    q.set_source("vanguard_au")
+    actual = q.fetch("vanguard", ["BOND"])
     
     assert actual is not None
     assert actual
 
 def test_sources():
-    assert False
+    """ Fetch the list of available sources / agents """
+    from finance_quote_python.finance import DownloadSources
+    q = Quote()
+    sources = q.sources
+
+    assert sources is not None
+    assert sources
+    assert len(sources) == len(DownloadSources)
 
 def test_currency_lookup():
     assert False

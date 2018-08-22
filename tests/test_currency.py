@@ -19,7 +19,8 @@ def test_aud_eur_fixerio():
 def test_parameters_case_insensitive():
     """ parameters must be case insensitive """
     q = Quote()
-    q.set_agent("")
+    # the default provider should be used
+    #q.set_source("fixerio")
     actual = q.currency("AuD", "eur")
 
     assert actual is not None

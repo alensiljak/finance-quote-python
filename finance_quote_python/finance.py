@@ -12,8 +12,8 @@ from .vanguard_au import VanguardAuDownloader
 from .fixerio import Fixerio
 
 
-class DownloadAgents(Enum):
-    """ Available agents for price download """
+class DownloadSources(Enum):
+    """ Available sources for price download """
     alphavantage = auto(),
     fixerio = auto(),
     morningstar = auto(),
@@ -22,11 +22,12 @@ class DownloadAgents(Enum):
 
 class Quote:
     """ The main application object. 
-    Select the downloading agent first q.set_agent(<name>)
-    then call q.fetch("ASX", "VAS")
+    Select the downloading source first q.set_source(<name>)
+    then call q.fetch("ASX", "VAS").
+    The list of sources is available through q.sources property.
     """
     symbol = None
-    agent = None
+    source = None
 
     """ The main application object """
     def __init__(self):
@@ -46,6 +47,11 @@ class Quote:
         
         # fetch the prices using the given module.
         result = []
+        for symbol in symbols:
+            price = self.__download(exchange, symbol, None, self.source)
+            if price:
+                result.append(price)
+
         return result
 
     def currency(self, source: str, destination: str) -> PriceModel:
@@ -62,43 +68,49 @@ class Quote:
 
         return result
 
-    def set_agent(self, agent: str):
-        """ Set the download agent to use to fetch the prices. """
-        self.agent = agent.lower()
+    @property
+    def sources(self) -> List[str]:
+        """ Available sources for prices """
+        result = []
+        for source in DownloadSources:
+            result.append(source.name)
+        return result
 
-    def __download_price(self, exchange: str, symbol: str):
-        """ Download single price """
-        # todo Instantiate the appropriate agent from exchange.
-        exchange = exchange.lower()
-        
-        pass
+    def set_source(self, source: str):
+        """ Set the download source to use to fetch the prices. """
+        self.source = source.lower()
 
-    def __download(self, symbol: str, currency: str = None, agent: str = None):
+    def __download(self, namespace: str, symbol: str, currency: str = None, source: str = None):
         """ Download single latest price """
         from pricedb import SecuritySymbol
 
-        assert agent is not None
-        assert isinstance(agent, str)
+        assert source is not None
+        assert isinstance(source, str)
 
+        if namespace:
+            namespace = namespace.upper()
         symbol = symbol.upper()
-        currency = currency.upper()
-        agent = agent.lower()
+        if currency:
+            currency = currency.upper()
+        source = source.lower()
         actor = None
         price = None
 
         security_symbol = SecuritySymbol("", "")
         security_symbol.parse(symbol)
+        if not security_symbol.namespace:
+            security_symbol.namespace = namespace
 
-        if agent == DownloadAgents.morningstar.name:
+        if source == DownloadSources.morningstar.name:
             actor = MorningstarDownloader()
-        elif agent == DownloadAgents.vanguard_au.name:
+        elif source == DownloadSources.vanguard_au.name:
             actor = VanguardAuDownloader()
-        elif agent == DownloadAgents.alphavantage.name:
+        elif source == DownloadSources.alphavantage.name:
             actor = AlphaVantageDownloader()
-        elif agent == DownloadAgents.fixerio.name:
+        elif source == DownloadSources.fixerio.name:
             actor = Fixerio()
         else:
-            raise ValueError("No agent specified for price download.")
+            raise ValueError("No source specified for price download.")
 
         if actor:
             actor.logger = self.logger

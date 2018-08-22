@@ -1,5 +1,7 @@
 """ Various tests for fetching the prices """
 import pytest
+from typing import List
+
 from finance_quote_python import Quote
 
 
@@ -16,7 +18,15 @@ def test_no_symbols():
     assert ex.typename == 'ValueError'
     assert ex.value.args[0] == "The symbols are missing."
    
+
 def test_result_hash():
-    """ The result is a hash.
+    """ The result is a Price Model object
     """
-    assert False
+    from pricedb import PriceModel
+
+    q = Quote()
+    q.set_source("vanguard_au")
+    actual = q.fetch("vanguard", ["BOND"])
+
+    assert actual
+    assert isinstance(actual[0], PriceModel)

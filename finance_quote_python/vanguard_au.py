@@ -53,7 +53,9 @@ class VanguardAuDownloader:
         }
 
     def download(self, symbol: SecuritySymbol, currency: str):
-        """ Download price """
+        """ Download price.
+        The currency argument is ignored and is always AUD.
+        """
         if symbol.namespace != "Vanguard".upper():
             raise ValueError(f"Only Vanguard namespace is handled by this agent. Requested {symbol.namespace}:{symbol.mnemonic}!")
 
