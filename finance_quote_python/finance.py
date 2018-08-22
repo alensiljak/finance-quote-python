@@ -21,7 +21,12 @@ class DownloadAgents(Enum):
 
 
 class Quote:
+    """ The main application object. 
+    Select the downloading agent first q.set_agent(<name>)
+    then call q.fetch("ASX", "VAS")
+    """
     symbol = None
+    agent = None
 
     """ The main application object """
     def __init__(self):
@@ -29,7 +34,7 @@ class Quote:
 
     def fetch(self, exchange: str, symbols: List[str]):
         """ The main method to fetch prices.
-        exchange = the name of the exchange, also the module used to fetch the prices, namespace;
+        exchange = the name of the exchange, commodity namespace in GnuCash;
         symbols = the list of symbols to fetch;
         """
         assert isinstance(exchange, str)
@@ -56,6 +61,10 @@ class Quote:
         result = self.__download(source, destination, default_provider)
 
         return result
+
+    def set_agent(self, agent: str):
+        """ Set the download agent to use to fetch the prices. """
+        self.agent = agent.lower()
 
     def __download_price(self, exchange: str, symbol: str):
         """ Download single price """
