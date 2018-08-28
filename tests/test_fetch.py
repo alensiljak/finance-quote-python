@@ -20,7 +20,8 @@ def test_no_symbols():
    
 
 def test_result_hash():
-    """ The result is a Price Model object
+    """ The result is a Price Model object.
+    Also tests connectivity and parsing.
     """
     from pricedb import PriceModel
 
@@ -30,3 +31,22 @@ def test_result_hash():
 
     assert actual
     assert isinstance(actual[0], PriceModel)
+
+
+def test_parsing():
+    """ Test that the expected schema is retrieved """
+    from decimal import Decimal
+
+    q = Quote()
+    q.set_source("vanguard_au")
+    actual = q.fetch("vanguard", ["BOND"])
+
+    assert actual
+    # test that the source schema has not changed.
+    price = actual[0]
+    assert price.currency
+    assert price.datum
+    assert price.symbol
+    assert price.symbol.namespace == "vanguard".upper()
+    assert price.value
+    assert isinstance(price.value, Decimal)

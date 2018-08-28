@@ -101,7 +101,11 @@ class VanguardAuDownloader:
         # pylint: disable=C0301
         # url = "https://www.vanguardinvestments.com.au/retail/mvc/getNavPriceList.jsonp"
         # url = "https://intlgra-globm-209.gra.international.vgdynamic.info/rs/gre/gra/datasets/auw-retail-listview-data.jsonp"
-        url = "https://intlgra-graapp-72-prd.gra.international.vgdynamic.info/rs/gre/gra/datasets/auw-retail-listview-data.jsonp"
+        #url = "https://intlgra-graapp-72-prd.gra.international.vgdynamic.info/rs/gre/gra/datasets/auw-retail-listview-data.jsonp"
+        # The server name changes dynamically and has to be adjusted manually.
+        serverName = "graapp-94-prd"
+        url = f"https://intlgra-{serverName}.gra.international.vgdynamic.info/rs/gre/gra/datasets/auw-retail-listview-data.jsonp"
+
         response = requests.get(url)
         if response.status_code != 200:
             return "Error"
