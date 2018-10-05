@@ -6,4 +6,4 @@ The idea for this project is to implement the [Finance::Quote](https://github.co
 
 ## Development
 
-Register the module with `pip install -e .` from the rood directory.
+Register the module with `pip install -e .` from the root directory.
