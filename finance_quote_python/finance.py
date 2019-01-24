@@ -36,8 +36,8 @@ class Quote:
 
     def fetch(self, exchange: str, symbols: List[str]):
         """ The main method to fetch prices.
-        exchange = the name of the exchange, commodity namespace in GnuCash;
-        symbols = the list of symbols to fetch;
+        exchange = the name of the exchange, commodity *namespace* in GnuCash;
+        symbols = the list of symbols (just the company ticker!) to fetch;
         """
         assert isinstance(exchange, str)
         #assert isinstance(symbols, List[str])
