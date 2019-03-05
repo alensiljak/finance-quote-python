@@ -1,12 +1,8 @@
 """ Morningstar price downloader """
 import logging
-import urllib.parse
-import urllib.request
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
 from pydatum import Datum
-
-from bs4 import BeautifulSoup
 
 from pricedb.model import PriceModel, SecuritySymbol
 
@@ -16,10 +12,12 @@ class MorningstarDownloader:
     def __init__(self):
         self.url = "http://quotes.morningstar.com/stockq/c-header"
         self.params = {'t': 'symbol'}
+        # Left: GnuCash, right: Morningstar
         self.namespaces = {
             "AMS": "XAMS",
             "ASX": "XASX",
             "XETRA": "XETR",
+            "FWB": "XFRA",
             "LSE": "XLON",
             "NASDAQ": "XNAS",
             "NYSE": "XNYS",
@@ -29,6 +27,9 @@ class MorningstarDownloader:
 
     def download(self, symbol: SecuritySymbol, currency: str) -> PriceModel:
         """ Download the given symbol """
+        import urllib.parse
+        import urllib.request
+
         if not symbol.namespace:
             raise ValueError(f"Namespace not sent for {symbol}")
 
@@ -56,15 +57,17 @@ class MorningstarDownloader:
 
         return price
 
-    def parse_price(self, page: str) -> PriceModel:
+    def parse_price(self, html: str) -> PriceModel:
         """ parse html to get the price """
+        from bs4 import BeautifulSoup
+
         result = PriceModel()
-        soup = BeautifulSoup(page, 'html.parser')
+        soup = BeautifulSoup(html, 'html.parser')
 
         # Price value
         price_el = soup.find(id='last-price-value')
         if not price_el:
-            logging.debug(f"Received from mstar: {page}")
+            logging.debug(f"Received from mstar: {html}")
             raise ValueError("No price info found in returned HTML.")
 
         value = price_el.get_text().strip()
