@@ -110,6 +110,8 @@ class Quote:
         if not security_symbol.namespace:
             security_symbol.namespace = namespace
 
+        # todo: read import modules dynamically?
+
         if source == DownloadSources.morningstar.name:
             actor = MorningstarDownloader()
         elif source == DownloadSources.vanguard_au.name:
