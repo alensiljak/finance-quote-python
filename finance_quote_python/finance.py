@@ -9,7 +9,7 @@ from pricedb import PriceModel
 from .alphavantage import AlphaVantageDownloader
 from .morningstar import MorningstarDownloader
 from .vanguard_au import VanguardAuDownloader
-from .boerse_frankfurt import FwbDownloader
+#from .boerse_frankfurt import FwbDownloader
 from .fixerio import Fixerio
 
 
@@ -118,8 +118,8 @@ class Quote:
             actor = AlphaVantageDownloader()
         elif source == DownloadSources.fixerio.name:
             actor = Fixerio()
-        elif source == DownloadSources.boerse_frankfurt.name:
-            actor = FwbDownloader()
+        # elif source == DownloadSources.boerse_frankfurt.name:
+        #     actor = FwbDownloader()
         else:
             raise ValueError("No source specified for price download.")
 
