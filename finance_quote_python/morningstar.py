@@ -1,4 +1,7 @@
-""" Morningstar price downloader """
+"""
+Morningstar price downloader
+The exchanges that do not have an explicit mappings are taken as-is.
+"""
 import logging
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
@@ -16,6 +19,7 @@ class MorningstarDownloader:
         self.namespaces = {
             "AMS": "XAMS",
             "ASX": "XASX",
+            # "BATS": "BATS",
             "XETRA": "XETR",
             "FWB": "XFRA",
             "LSE": "XLON",
@@ -34,7 +38,11 @@ class MorningstarDownloader:
             raise ValueError(f"Namespace not sent for {symbol}")
 
         # get the translated namespace
-        local_namespace = self.namespaces[symbol.namespace]
+        if symbol.namespace in self.namespaces:
+            local_namespace = self.namespaces[symbol.namespace]
+        else:
+            # Take the namespace as is.
+            local_namespace = symbol.namespace
         self.params["t"] = f"{local_namespace}:{symbol.mnemonic}"
         # assemble url
         params = urllib.parse.urlencode(self.params)

@@ -1,5 +1,5 @@
 '''
-Test downloaders
+Manual tests for downloaders. Used for debugging.
 '''
 #from finance_quote_python.boerse_frankfurt import FwbDownloader
 from finance_quote_python.morningstar import MorningstarDownloader
@@ -28,6 +28,15 @@ def test_fwb_vmid():
     dl = MorningstarDownloader()
     symbol = SecuritySymbol("FWB", "VMID")
     actual = dl.download(symbol, "EUR")
+
+    assert actual is not None
+    assert actual > 0
+
+def test_bats():
+    ''' BATS exchange '''
+    dl = MorningstarDownloader()
+    symbol = SecuritySymbol("BATS", "EMHY")
+    actual = dl.download(symbol, "USD")
 
     assert actual is not None
     assert actual > 0
