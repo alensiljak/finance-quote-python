@@ -11,4 +11,6 @@ setup(name='finance_quote_python',
       author_email='alen.siljak@gmx.com',
       license='GPL3',
       packages=['finance_quote_python'],
-      zip_safe=False)
+      zip_safe=False,
+      # install_requires=['alpha_vantage']
+      )
