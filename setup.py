@@ -4,7 +4,7 @@ Setup configuration for the package.
 from setuptools import setup
 
 setup(name='finance_quote_python',
-      version='1.3.0',
+      version='1.4.0',
       description='Finance::Quote implementation in Python',
       url='https://github.com/MisterY/finance-quote-python',
       author='Alen Siljak',
@@ -12,5 +12,5 @@ setup(name='finance_quote_python',
       license='GPL3',
       packages=['finance_quote_python'],
       zip_safe=False,
-      # install_requires=['alpha_vantage']
+      # install_requires=['alpha_vantage', 'sseclient']
       )
