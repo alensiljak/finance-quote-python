@@ -6,7 +6,6 @@ See https://pypi.org/project/sseclient/
 
 The new boerse-frankfurt.de
 https://www.boerse-frankfurt.de/etp/IE00B810Q511
-
 https://api.boerse-frankfurt.de/data/price_information?isin=IE00B810Q511&mic=XETR
 https://api.boerse-frankfurt.de/data/quote_box?isin=IE00BKX55Q28&mic=XFRA
 '''
