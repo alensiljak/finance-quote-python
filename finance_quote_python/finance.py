@@ -6,12 +6,6 @@ from enum import Enum, auto
 
 from pricedb import PriceModel
 
-from .alphavantage import AlphaVantageDownloader
-from .morningstar import MorningstarDownloader
-from .vanguard_au import VanguardAuDownloader
-#from .boerse_frankfurt import FwbDownloader
-from .fixerio import Fixerio
-
 
 class DownloadSources(Enum):
     """ Available sources for price download """
@@ -19,6 +13,7 @@ class DownloadSources(Enum):
     fixerio = auto(),
     boerse_frankfurt = auto(),
     morningstar = auto(),
+    morningstar_de = auto(),
     vanguard_au = auto()
 
 
@@ -92,6 +87,12 @@ class Quote:
     def __download(self, namespace: str, symbol: str, currency: str = None, source: str = None):
         """ Download single latest price """
         from pricedb import SecuritySymbol
+        from .alphavantage import AlphaVantageDownloader
+        from .morningstar import MorningstarDownloader
+        from .morningstar_de import MorningstarDeDownloader
+        from .vanguard_au import VanguardAuDownloader
+        from .boerse_frankfurt import FwbDownloader
+        from .fixerio import Fixerio
 
         assert source is not None
         assert isinstance(source, str)
@@ -114,14 +115,16 @@ class Quote:
 
         if source == DownloadSources.morningstar.name:
             actor = MorningstarDownloader()
+        elif source == DownloadSources.morningstar_de.name:
+            actor = MorningstarDeDownloader()
         elif source == DownloadSources.vanguard_au.name:
             actor = VanguardAuDownloader()
         elif source == DownloadSources.alphavantage.name:
             actor = AlphaVantageDownloader()
         elif source == DownloadSources.fixerio.name:
             actor = Fixerio()
-        # elif source == DownloadSources.boerse_frankfurt.name:
-        #     actor = FwbDownloader()
+        elif source == DownloadSources.boerse_frankfurt.name:
+            actor = FwbDownloader()
         else:
             raise ValueError("No source specified for price download.")
 

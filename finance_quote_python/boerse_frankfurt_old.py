@@ -1,10 +1,13 @@
 '''
 Price downloader for Boerse Frankfurt (FWB)
 
-The new boerse-frankfurt.de
-https://www.boerse-frankfurt.de/etp/IE00B810Q511
+*** Incomplete, not needed ***
 
-https://api.boerse-frankfurt.de/data/quote_box?isin=IE00BKX55Q28&mic=XFRA
+VGOV
+http://proxy.boerse-frankfurt.de/cst/BoerseFrankfurt/Share/chart.json?instruments=1600000012,18575515,13,814&period=OneYear
+http://proxy.boerse-frankfurt.de/cst/BoerseFrankfurt/Share/chart.json?instruments=1000000012,18575515,13,814&period=Intraday
+VMID
+http://proxy.boerse-frankfurt.de/cst/BoerseFrankfurt/Share/chart.json?instruments=1000000012,25116447,13,814&period=Intraday
 '''
 import logging
 from pricedb import SecuritySymbol, PriceModel
@@ -13,6 +16,7 @@ from pricedb import SecuritySymbol, PriceModel
 class FwbDownloader:
     ''' FWB '''
     def __init__(self):
+        #self.url = "http://quotes.morningstar.com/stockq/c-header"
         self.namespace = "FWB"
         self.logger = logging.getLogger(__name__)
 
@@ -46,14 +50,15 @@ class FwbDownloader:
             raise ValueError("Wrong exchange requested!")
 
         sec_codes = {
-            "VGOV": "IE00B42WWV65",
-            "VMID": "IE00BKX55Q28",
-            "VUKE": "IE00B810Q511"
+            "VGOV": "18575515",
+            "VMID": "25116447"
         }
-        isin = sec_codes[security.mnemonic]
+        sec_code = sec_codes[security.mnemonic]
 
-        #url = f"https://www.boerse-frankfurt.de/etp/{isin}"
-        url = f"https://api.boerse-frankfurt.de/data/quote_box?isin={isin}&mic=XFRA"
+        instrument = "1000000012" # ETF
+        period = "Intraday"
+
+        url = f"http://proxy.boerse-frankfurt.de/cst/BoerseFrankfurt/Share/chart.json?instruments={instrument},{sec_code},13,814&period={period}"
 
         return url
 
