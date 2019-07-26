@@ -4,12 +4,12 @@ Test Reuters download
 from finance_quote_python import Quote
 
 
-#exchange = 'FWB'
 source = 'reuters'
 
 
 def test_download():
     symbols = ['VUKE']
+    # , 'VMID', 'VGOV'
     q = Quote()
     q.set_source(source)
 

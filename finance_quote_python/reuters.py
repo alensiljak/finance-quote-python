@@ -20,15 +20,20 @@ class Reuters:
             return None
 
         price = self.parse_price(html)
+        price.symbol = symbol
+
         return price
 
     def get_security_url(self, security: SecuritySymbol) -> str:
         base = "https://www.reuters.com/finance/stocks/overview/"
-        symbol_dict = {
-            "FWB:VUKE": "VUKE.F"
+
+        exchange_dict = {
+            'FWB': 'F'
         }
-        symbol = symbol_dict[str(security)]
-        return f"{base}{symbol}"
+
+        namespace = exchange_dict[security.namespace]
+
+        return f"{base}{security.mnemonic}.{namespace}"
     
     def parse_price(self, html: str) -> PriceModel:
         from decimal import Decimal, InvalidOperation
@@ -64,25 +69,24 @@ class Reuters:
 
     def parse_date(self, date_str: str):
         ''' parse date/time '''
-        #from datetime import datetime
         from dateutil.parser import parse
         from dateutil import tz
         from pydatum import Datum
-        import pytz
-        from pytz import timezone
 
         # Can be "19 Jul 2019" or "6:06am EDT".
 
         if "EDT" in date_str:
             # the format is "6:06am EDT"
-            eastern = timezone('US/Eastern')
-
-            test = tz.gettz('EDT')
+            from_zone = tz.gettz('US/Eastern')
+            #est = tz.gettz('EST')
             to_zone = tz.tzlocal()
-        
-        #date_val = datetime.strptime(date_str, "%d %b %Y")
-        date_val = parse(date_str, tzinfos=tzd)
+            parsed_date = parse(date_str)
+            date_val = parsed_date.replace(tzinfo=from_zone).astimezone(tz=to_zone)
+        else:
+            # the date format is "19 Jul 2019"
+            #date_val = datetime.strptime(date_str, "%d %b %Y")
+            date_val = parse(date_str)
+
         datum = Datum()
         result = datum.from_datetime(date_val)
-
         return result

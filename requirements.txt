@@ -1,4 +1,3 @@
 alphavantage
 python-dateutil
-pytz
 sseclient
