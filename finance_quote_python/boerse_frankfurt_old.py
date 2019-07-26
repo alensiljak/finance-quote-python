@@ -22,7 +22,7 @@ class FwbDownloader:
 
     def download(self, symbol: SecuritySymbol, currency: str) -> PriceModel:
         ''' download the price '''
-        import urllib.parse
+        #import urllib.parse
         import urllib.request
 
         if not symbol.namespace:
@@ -42,7 +42,7 @@ class FwbDownloader:
         # parse
         price = self.parse_price(html)
 
-        return None
+        return price
 
     def get_security_url(self, security: SecuritySymbol) -> str:
         ''' Mapping the security to the price URL '''
@@ -67,8 +67,8 @@ class FwbDownloader:
         from bs4 import BeautifulSoup
 
         result = PriceModel()
-        soup = BeautifulSoup(html, 'html.parser')
+        #soup = BeautifulSoup(html, 'html.parser')
 
-        price_el = soup.find(id='last-price-value')
+        #price_el = soup.find(id='last-price-value')
 
-        return ''
+        return result

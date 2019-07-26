@@ -5,8 +5,6 @@ The exchanges that do not have an explicit mappings are taken as-is.
 import logging
 from datetime import datetime
 from decimal import Decimal, InvalidOperation
-from pydatum import Datum
-
 from pricedb.model import PriceModel, SecuritySymbol
 
 
@@ -68,6 +66,7 @@ class MorningstarDownloader:
     def parse_price(self, html: str) -> PriceModel:
         """ parse html to get the price """
         from bs4 import BeautifulSoup
+        from pydatum import Datum
 
         result = PriceModel()
         soup = BeautifulSoup(html, 'html.parser')

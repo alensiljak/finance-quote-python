@@ -14,6 +14,7 @@ class DownloadSources(Enum):
     boerse_frankfurt = auto(),
     morningstar = auto(),
     morningstar_de = auto(),
+    reuters = auto(),
     vanguard_au = auto()
 
 
@@ -93,6 +94,7 @@ class Quote:
         from .vanguard_au import VanguardAuDownloader
         from .boerse_frankfurt import FwbDownloader
         from .fixerio import Fixerio
+        from .reuters import Reuters
 
         assert source is not None
         assert isinstance(source, str)
@@ -125,6 +127,8 @@ class Quote:
             actor = Fixerio()
         elif source == DownloadSources.boerse_frankfurt.name:
             actor = FwbDownloader()
+        elif source == DownloadSources.reuters.name:
+            actor = Reuters()
         else:
             raise ValueError("No source specified for price download.")
 
