@@ -4,7 +4,7 @@ Setup configuration for the package.
 from setuptools import setup
 
 setup(name='finance_quote_python',
-      version='1.5.0',
+      version='1.5.1',
       description='Finance::Quote implementation in Python',
       url='https://github.com/MisterY/finance-quote-python',
       author='Alen Siljak',

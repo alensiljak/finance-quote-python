@@ -103,8 +103,8 @@ class VanguardAuDownloader:
         # url = "https://intlgra-globm-209.gra.international.vgdynamic.info/rs/gre/gra/datasets/auw-retail-listview-data.jsonp"
         #url = "https://intlgra-graapp-72-prd.gra.international.vgdynamic.info/rs/gre/gra/datasets/auw-retail-listview-data.jsonp"
         # The server name changes dynamically and has to be adjusted manually.
-        serverName = "graapp-94-prd"
-        url = f"https://intlgra-{serverName}.gra.international.vgdynamic.info/rs/gre/gra/datasets/auw-retail-listview-data.jsonp"
+        #serverName = "graapp-94-prd"
+        url = f"https://api.vanguard.com/rs/gre/gra/1.7.0/datasets/auw-retail-listview-data.jsonp"
 
         response = requests.get(url)
         if response.status_code != 200:
